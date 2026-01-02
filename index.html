@@ -3,57 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Page</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+    <title>website</title>
     <style>
         body {
+            background: linear-gradient(to bottom, #87CEEB, #E0F6FF);
+            color: #333;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Chewy', cursive;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #FFB6C1;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
+        .cloud1 {
+            width: 100px;
+            height: 40px;
+            top: 15%;
+            left: 20%;
+            box-shadow: 120px 20px 0 -10px white,
+                        200px 60px 0 -5px white,
+                        -80px 80px 0 -8px white;
+            animation: float1 20s ease-in-out infinite;
+        }
+
+        .cloud2 {
+            width: 120px;
+            height: 50px;
+            top: 40%;
+            right: 15%;
+            animation: float2 25s ease-in-out infinite;
+            box-shadow: -150px -30px 0 -12px white,
+                        100px 40px 0 -8px white;
+        }
+
+        .cloud3 {
+            width: 90px;
+            height: 35px;
+            top: 60%;
+            left: 10%;
+            animation: float3 18s ease-in-out infinite;
+            box-shadow: 80px 10px 0 -8px white,
+                        -60px 15px 0 -6px white;
+        }
+
+        .cloud4 {
+            width: 110px;
+            height: 45px;
+            top: 25%;
+            left: 60%;
+            animation: float4 22s ease-in-out infinite;
+            box-shadow: -90px 25px 0 -10px white,
+                        140px -15px 0 -7px white;
+        }
+
+        .cloud5 {
+            width: 80px;
+            height: 30px;
+            top: 70%;
+            right: 25%;
+            animation: float5 16s ease-in-out infinite;
+            box-shadow: 70px 8px 0 -5px white;
+        }
+
+        .cloud6 {
+            width: 95px;
+            height: 38px;
+            top: 10%;
+            right: 40%;
+            animation: float6 24s ease-in-out infinite;
+            box-shadow: -110px 18px 0 -9px white,
+                        85px -12px 0 -6px white;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50% { transform: translateX(30px) translateY(-10px); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50% { transform: translateX(-40px) translateY(15px); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50% { transform: translateX(50px) translateY(20px); }
+        }
+
+        @keyframes float4 {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50% { transform: translateX(-35px) translateY(-15px); }
+        }
+
+        @keyframes float5 {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50% { transform: translateX(45px) translateY(-20px); }
+        }
+
+        @keyframes float6 {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50% { transform: translateX(25px) translateY(12px); }
         }
 
         h1 {
-            color: white;
-            font-size: 64px;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-            margin-bottom: 50px;
+            animation: zoomIn 1s ease-out;
+            font-size: 3em;
+            text-align: center;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
         }
 
-        .button-link {
-            padding: 30px 60px;
-            font-size: 32px;
-            background-color: #FF69B4;
-            color: white;
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .nav-button {
+            background-color: #ffffff;
+            color: #4169E1;
+            padding: 10px 20px;
             border: none;
-            border-radius: 15px;
+            border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-family: 'Chewy', cursive;
-            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .nav-button:hover {
+            background-color: #f0f0f0;
+        }
+        input {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid white;
         }
 
-        .button-link:hover {
-            background-color: #FF1493;
-            transform: scale(1.05);
+        .tree {
+            position: absolute;
+            right: 100px;
+            bottom: 0;
         }
 
-        .button-link:active {
-            transform: scale(0.98);
+        .trunk {
+            width: 60px;
+            height: 200px;
+            background-color: #642c04;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .leaves {
+            width: 150px;
+            height: 150px;
+            background-color: #4fd44f;
+            border-radius: 50%;
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
         }
     </style>
 </head>
 <body>
-    <h1>Welcome!</h1>
-    <a href="button_counter.html" class="button-link">Go to Click Counter</a>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+    <div class="cloud cloud4"></div>
+    <div class="cloud cloud5"></div>
+    <div class="cloud cloud6"></div>
+
+    <div class="tree">
+        <div class="trunk">
+            <div class="leaves"></div>
+        </div>
+    </div>
 </body>
 </html>
