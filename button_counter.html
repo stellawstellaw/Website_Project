@@ -148,6 +148,121 @@
             right: 11px;
         }
 
+        .cloud6 {
+            width: 180px;
+            height: 70px;
+            top: 15%;
+            left: 10%;
+            animation-duration: 35s;
+            animation-delay: 0s;
+        }
+
+        .cloud6::before {
+            width: 90px;
+            height: 90px;
+            top: -45px;
+            left: 20px;
+        }
+
+        .cloud6::after {
+            width: 100px;
+            height: 70px;
+            top: -30px;
+            right: 20px;
+        }
+
+        .cloud7 {
+            width: 200px;
+            height: 80px;
+            top: 60%;
+            left: 50%;
+            animation-duration: 40s;
+            animation-delay: 0s;
+        }
+
+        .cloud7::before {
+            width: 100px;
+            height: 100px;
+            top: -50px;
+            left: 25px;
+        }
+
+        .cloud7::after {
+            width: 110px;
+            height: 80px;
+            top: -35px;
+            right: 25px;
+        }
+
+        .cloud8 {
+            width: 150px;
+            height: 60px;
+            top: 40%;
+            left: 70%;
+            animation-duration: 33s;
+            animation-delay: 0s;
+        }
+
+        .cloud8::before {
+            width: 75px;
+            height: 75px;
+            top: -38px;
+            left: 18px;
+        }
+
+        .cloud8::after {
+            width: 85px;
+            height: 60px;
+            top: -25px;
+            right: 18px;
+        }
+
+        .cloud9 {
+            width: 130px;
+            height: 50px;
+            top: 80%;
+            left: 25%;
+            animation-duration: 29s;
+            animation-delay: 0s;
+        }
+
+        .cloud9::before {
+            width: 65px;
+            height: 65px;
+            top: -32px;
+            left: 15px;
+        }
+
+        .cloud9::after {
+            width: 75px;
+            height: 50px;
+            top: -22px;
+            right: 15px;
+        }
+
+        .cloud10 {
+            width: 170px;
+            height: 65px;
+            top: 5%;
+            left: 80%;
+            animation-duration: 38s;
+            animation-delay: 0s;
+        }
+
+        .cloud10::before {
+            width: 85px;
+            height: 85px;
+            top: -42px;
+            left: 22px;
+        }
+
+        .cloud10::after {
+            width: 95px;
+            height: 65px;
+            top: -28px;
+            right: 22px;
+        }
+
         @keyframes float {
             from {
                 left: -200px;
@@ -172,6 +287,105 @@
             font-family: 'Chewy', cursive;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInOut 4s ease-in-out forwards;
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+            }
+            25% {
+                opacity: 1;
+            }
+            75% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .wind-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            font-size: 20px;
+            background-color: #5BA3D0;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Chewy', cursive;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .wind-button:hover {
+            background-color: #4A8AB8;
+            transform: scale(1.05);
+        }
+
+        .wind-button.active {
+            background-color: #FFD700;
+            color: #333;
+        }
+
+        .time-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 15px 25px;
+            font-size: 30px;
+            background-color: #5BA3D0;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .time-button:hover {
+            background-color: #4A8AB8;
+            transform: scale(1.05);
+        }
+
+        .time-button:active {
+            transform: scale(0.98);
+        }
+
+        .wind-aura {
+            position: fixed;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 50;
+        }
+
+        .wind-aura.active {
+            opacity: 1;
+        }
+
+        .sun {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, #FFFACD 0%, #FFE66D 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 60px rgba(255, 250, 205, 0.7);
+            z-index: 5;
+            transition: top 2s ease-in-out;
         }
 
         #count {
@@ -251,34 +465,160 @@
     <div class="cloud cloud3"></div>
     <div class="cloud cloud4"></div>
     <div class="cloud cloud5"></div>
+    <div class="cloud cloud6"></div>
+    <div class="cloud cloud7"></div>
+    <div class="cloud cloud8"></div>
+    <div class="cloud cloud9"></div>
+    <div class="cloud cloud10"></div>
 
-    <div class="counter-text">Click Counter:</div>
-    <div class="counter-text" id="count">0</div>
-
-    <div class="mini-circle mini-circle-left" onclick="resetCounter()">Reset</div>
-    <div class="mini-circle mini-circle-right" onclick="decrementCounter()">-1</div>
-
-    <div class="button-container">
-        <button class="big-button" onclick="incrementCounter()">Click Counter:</button>
-    </div>
+    <div class="sun"></div>
+    <div class="counter-text">Interact!</div>
+    <div class="wind-aura"></div>
+    <button class="wind-button" onclick="toggleWind()">Wind: OFF</button>
+    <button class="time-button" onclick="cycleTime()">☀️</button>
 
     <script>
-        let count = 0;
+        let windEnabled = false;
+        let mouseX = 0;
+        let mouseY = 0;
+        let timeOfDay = 'day'; // day, sunset, night
 
-        function incrementCounter() {
-            count++;
-            document.getElementById('count').textContent = count;
+        function cycleTime() {
+            const button = document.querySelector('.time-button');
+            const body = document.body;
+            const sun = document.querySelector('.sun');
+            const screenHeight = window.innerHeight;
+
+            if (timeOfDay === 'day') {
+                timeOfDay = 'sunset';
+                button.textContent = '🌅';
+                body.style.background = 'linear-gradient(to bottom, #FF6B6B 0%, #FFD93D 50%, #FFA500 100%)';
+                // Move sun to middle/bottom for sunset
+                sun.style.top = (screenHeight * 0.6) + 'px';
+            } else if (timeOfDay === 'sunset') {
+                timeOfDay = 'night';
+                button.textContent = '🌙';
+                body.style.background = 'linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%)';
+                // Move sun below screen (set)
+                sun.style.top = (screenHeight + 100) + 'px';
+
+                // After animation completes, teleport sun to above screen (invisible)
+                setTimeout(() => {
+                    sun.style.transition = 'none'; // Disable transition for instant teleport
+                    sun.style.top = '-250px'; // Far above screen
+                    // Re-enable transition after teleport
+                    setTimeout(() => {
+                        sun.style.transition = 'top 2s ease-in-out';
+                    }, 50);
+                }, 2000); // Wait for sunset->night animation to finish
+            } else {
+                timeOfDay = 'day';
+                button.textContent = '☀️';
+                body.style.background = 'linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%)';
+                // Sun is already at -250px (above screen), move it down to top visible position
+                sun.style.top = '-50px';
+            }
         }
 
-        function decrementCounter() {
-            count--;
-            document.getElementById('count').textContent = count;
+        function toggleWind() {
+            windEnabled = !windEnabled;
+            const button = document.querySelector('.wind-button');
+            const aura = document.querySelector('.wind-aura');
+
+            if (windEnabled) {
+                button.textContent = 'Wind: ON';
+                button.classList.add('active');
+                aura.classList.add('active');
+            } else {
+                button.textContent = 'Wind: OFF';
+                button.classList.remove('active');
+                aura.classList.remove('active');
+                resetCloudSpeeds();
+            }
         }
 
-        function resetCounter() {
-            count = 0;
-            document.getElementById('count').textContent = count;
+        function resetCloudSpeeds() {
+            const clouds = document.querySelectorAll('.cloud');
+            clouds.forEach(cloud => {
+                cloud.style.animationDuration = '';
+            });
         }
+
+        let cloudSpeeds = new Map();
+
+        // Initialize cloud speeds
+        document.addEventListener('DOMContentLoaded', () => {
+            const clouds = document.querySelectorAll('.cloud');
+            clouds.forEach(cloud => {
+                const initialDuration = parseFloat(window.getComputedStyle(cloud).animationDuration);
+                cloudSpeeds.set(cloud, initialDuration);
+            });
+        });
+
+        // Use setInterval for smooth, slower updates
+        let updateInterval = null;
+        let frameCount = 0;
+
+        function updateCloudSpeeds() {
+            if (!windEnabled) return;
+
+            const clouds = document.querySelectorAll('.cloud');
+            clouds.forEach(cloud => {
+                const rect = cloud.getBoundingClientRect();
+                const cloudCenterX = rect.left + rect.width / 2;
+                const cloudCenterY = rect.top + rect.height / 2;
+
+                // Calculate distance from mouse to cloud center
+                const distance = Math.sqrt(
+                    Math.pow(mouseX - cloudCenterX, 2) +
+                    Math.pow(mouseY - cloudCenterY, 2)
+                );
+
+                // If mouse is within 200px of cloud, gradually speed it up
+                if (distance < 200) {
+                    const currentSpeed = parseFloat(window.getComputedStyle(cloud).animationDuration);
+                    // Only speed up by 0.02% faster per frame (2% total)
+                    const newSpeed = currentSpeed * 0.9998;
+                    cloud.style.animationDuration = newSpeed + 's';
+                }
+            });
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Update wind aura position
+            const aura = document.querySelector('.wind-aura');
+            aura.style.left = mouseX + 'px';
+            aura.style.top = mouseY + 'px';
+        });
+
+        // Start the update loop with requestAnimationFrame
+        function animationLoop() {
+            updateCloudSpeeds();
+            requestAnimationFrame(animationLoop);
+        }
+        animationLoop();
+
+        // Sun movement - moves down slowly like the real sun setting
+        let sunPosition = -50; // Start at top
+        const sun = document.querySelector('.sun');
+
+        function moveSun() {
+            sunPosition += 30; // Move down 30px every 10 seconds
+
+            sun.style.top = sunPosition + 'px';
+
+            // Reset when sun goes below screen
+            const screenHeight = window.innerHeight;
+            if (sunPosition > screenHeight + 100) {
+                sunPosition = -50;
+            }
+        }
+
+        // Move sun every 10 seconds
+        setInterval(moveSun, 10000);
     </script>
 </body>
 </html>
