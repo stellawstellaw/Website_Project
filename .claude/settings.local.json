@@ -6,7 +6,8 @@
       "Bash(git commit:*)",
       "Bash(icacls:*)",
       "Bash(takeown:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(mv:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Counter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 100px;
+            opacity: 0.8;
+            animation: float linear infinite;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 100px;
+        }
+
+        .cloud1 {
+            width: 100px;
+            height: 40px;
+            top: 10%;
+            left: -100px;
+            animation-duration: 25s;
+        }
+
+        .cloud1::before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 10px;
+        }
+
+        .cloud1::after {
+            width: 60px;
+            height: 40px;
+            top: -15px;
+            right: 10px;
+        }
+
+        .cloud2 {
+            width: 120px;
+            height: 45px;
+            top: 25%;
+            left: -120px;
+            animation-duration: 30s;
+            animation-delay: 5s;
+        }
+
+        .cloud2::before {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: 15px;
+        }
+
+        .cloud2::after {
+            width: 70px;
+            height: 45px;
+            top: -20px;
+            right: 15px;
+        }
+
+        .cloud3 {
+            width: 90px;
+            height: 35px;
+            top: 50%;
+            left: -90px;
+            animation-duration: 28s;
+            animation-delay: 10s;
+        }
+
+        .cloud3::before {
+            width: 45px;
+            height: 45px;
+            top: -20px;
+            left: 10px;
+        }
+
+        .cloud3::after {
+            width: 55px;
+            height: 35px;
+            top: -15px;
+            right: 10px;
+        }
+
+        .cloud4 {
+            width: 110px;
+            height: 42px;
+            top: 70%;
+            left: -110px;
+            animation-duration: 32s;
+            animation-delay: 15s;
+        }
+
+        .cloud4::before {
+            width: 55px;
+            height: 55px;
+            top: -28px;
+            left: 12px;
+        }
+
+        .cloud4::after {
+            width: 65px;
+            height: 42px;
+            top: -18px;
+            right: 12px;
+        }
+
+        .cloud5 {
+            width: 95px;
+            height: 38px;
+            top: 35%;
+            left: -95px;
+            animation-duration: 27s;
+            animation-delay: 20s;
+        }
+
+        .cloud5::before {
+            width: 48px;
+            height: 48px;
+            top: -23px;
+            left: 11px;
+        }
+
+        .cloud5::after {
+            width: 58px;
+            height: 38px;
+            top: -16px;
+            right: 11px;
+        }
+
+        @keyframes float {
+            from {
+                left: -200px;
+            }
+            to {
+                left: 110%;
+            }
+        }
+
+        body > div {
+            position: relative;
+            z-index: 10;
+        }
+
+        .counter-text {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 48px;
+            font-weight: bold;
+            font-family: 'Chewy', cursive;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        #count {
+            top: 90px;
+        }
+
+        .button-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .big-button {
+            width: 300px;
+            height: 300px;
+            font-size: 40px;
+            background-color: #5BA3D0;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            font-family: 'Chewy', cursive;
+        }
+
+        .big-button:hover {
+            background-color: #4A8AB8;
+            transform: scale(1.05);
+        }
+
+        .big-button:active {
+            transform: scale(0.98);
+        }
+
+        .mini-circle {
+            width: 150px;
+            height: 150px;
+            background-color: #5BA3D0;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Chewy', cursive;
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mini-circle:hover {
+            background-color: #4A8AB8;
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .mini-circle:active {
+            transform: translateY(-50%) scale(0.98);
+        }
+
+        .mini-circle-left {
+            left: calc(50% - 320px);
+        }
+
+        .mini-circle-right {
+            right: calc(50% - 320px);
+        }
+    </style>
+</head>
+<body>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+    <div class="cloud cloud4"></div>
+    <div class="cloud cloud5"></div>
+
+    <div class="counter-text">Click Counter:</div>
+    <div class="counter-text" id="count">0</div>
+
+    <div class="mini-circle mini-circle-left" onclick="resetCounter()">Reset</div>
+    <div class="mini-circle mini-circle-right" onclick="decrementCounter()">-1</div>
+
+    <div class="button-container">
+        <button class="big-button" onclick="incrementCounter()">Click Counter:</button>
+    </div>
+
+    <script>
+        let count = 0;
+
+        function incrementCounter() {
+            count++;
+            document.getElementById('count').textContent = count;
+        }
+
+        function decrementCounter() {
+            count--;
+            document.getElementById('count').textContent = count;
+        }
+
+        function resetCounter() {
+            count = 0;
+            document.getElementById('count').textContent = count;
+        }
+    </script>
+</body>
+</html>
