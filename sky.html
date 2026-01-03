@@ -24,6 +24,11 @@
             border-radius: 100px;
             opacity: 0.8;
             animation: float linear infinite;
+            transition: background 0.5s ease;
+        }
+
+        .cloud.gray {
+            background: #B0B0B0;
         }
 
         .cloud::before,
@@ -32,6 +37,12 @@
             position: absolute;
             background: white;
             border-radius: 100px;
+            transition: background 0.5s ease;
+        }
+
+        .cloud.gray::before,
+        .cloud.gray::after {
+            background: #B0B0B0;
         }
 
         .cloud1 {
@@ -328,8 +339,8 @@
         }
 
         .wind-button.active {
-            background-color: #FFD700;
-            color: #333;
+            background-color: white;
+            color: #5BA3D0;
         }
 
         .time-button {
@@ -367,6 +378,96 @@
             transform: scale(1);
         }
 
+        .airplane-button {
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            padding: 15px 25px;
+            font-size: 30px;
+            background-color: #5BA3D0;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .airplane-button:hover {
+            background-color: #4A8AB8;
+            transform: scale(1.05);
+        }
+
+        .airplane-button:active {
+            transform: scale(0.98);
+        }
+
+        .airplane-button.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .weather-button {
+            position: fixed;
+            bottom: 180px;
+            left: 20px;
+            padding: 15px 25px;
+            font-size: 30px;
+            background-color: #5BA3D0;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .weather-button:hover {
+            background-color: #4A8AB8;
+            transform: scale(1.05);
+        }
+
+        .weather-button:active {
+            transform: scale(0.98);
+        }
+
+        .airplane {
+            position: fixed;
+            font-size: 40px;
+            z-index: 15;
+            transition: none;
+            pointer-events: none;
+        }
+
+        .airplane.night-glow {
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9))
+                    drop-shadow(0 0 15px rgba(255, 255, 255, 0.6))
+                    drop-shadow(0 0 25px rgba(255, 255, 255, 0.3));
+        }
+
+        .raindrop {
+            position: fixed;
+            width: 2px;
+            height: 20px;
+            background: linear-gradient(to bottom, rgba(100, 149, 237, 0.4), rgba(100, 149, 237, 0.9));
+            pointer-events: none;
+            z-index: 10;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0.5;
+            }
+        }
+
         .wind-aura {
             position: fixed;
             width: 150px;
@@ -394,6 +495,20 @@
             background: radial-gradient(circle, #FFFACD 0%, #FFE66D 100%);
             border-radius: 50%;
             box-shadow: 0 0 60px rgba(255, 250, 205, 0.7);
+            z-index: 5;
+            transition: top 2s ease-in-out;
+        }
+
+        .moon {
+            position: fixed;
+            top: -250px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #FFFFFF 0%, #E8E8E8 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 80px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6);
             z-index: 5;
             transition: top 2s ease-in-out;
         }
@@ -482,29 +597,260 @@
     <div class="cloud cloud10"></div>
 
     <div class="sun"></div>
+    <div class="moon"></div>
     <div class="counter-text">Interact!</div>
     <div class="wind-aura"></div>
     <button class="wind-button" onclick="toggleWind()">Wind: OFF</button>
     <button class="time-button" onclick="cycleTime()">☀️</button>
+    <button class="weather-button" onclick="cycleWeather()">☀️</button>
+    <button class="airplane-button" onclick="toggleAirplane()">✈️❌</button>
 
     <script>
         let windEnabled = false;
         let mouseX = 0;
         let mouseY = 0;
         let timeOfDay = 'day'; // day, sunset, night
-        let manualTimeControl = false; // Track if user is manually controlling time
+        let airplaneEnabled = false;
+        let airplanes = [];
+        let weatherStage = 0; // 0=☀️, 1=🌧️, 2=🌦️, 3=☁️, 4=🌩️, 5=🌨️
+        let raindrops = [];
+        let rainInterval = null;
+
+        function toggleAirplane() {
+            airplaneEnabled = !airplaneEnabled;
+            const button = document.querySelector('.airplane-button');
+
+            if (airplaneEnabled) {
+                button.textContent = '✈️';
+                button.classList.add('active');
+            } else {
+                button.textContent = '✈️❌';
+                button.classList.remove('active');
+            }
+        }
+
+        function cycleWeather() {
+            const button = document.querySelector('.weather-button');
+            const weatherEmojis = ['☀️', '🌧️', '🌦️', '☁️', '🌩️', '🌨️'];
+            const body = document.body;
+            const clouds = document.querySelectorAll('.cloud');
+
+            // Cycle to next stage
+            weatherStage = (weatherStage + 1) % 6;
+
+            // Update button emoji
+            button.textContent = weatherEmojis[weatherStage];
+
+            // Handle rain weather (stage 1 = 🌧️)
+            if (weatherStage === 1) {
+                // Make clouds gray
+                clouds.forEach(cloud => cloud.classList.add('gray'));
+
+                // Update sky gradient based on time of day
+                if (timeOfDay === 'day') {
+                    body.style.background = 'linear-gradient(to bottom, #6B8FA3 0%, #E0F6FF 100%)';
+                } else if (timeOfDay === 'sunset') {
+                    body.style.background = 'linear-gradient(to bottom, #8B8B8B 0%, #FFD93D 50%, #FFA500 100%)';
+                }
+
+                // Start rain
+                startRain();
+            } else {
+                // Make clouds white again
+                clouds.forEach(cloud => cloud.classList.remove('gray'));
+
+                // Reset sky gradient based on time of day
+                if (timeOfDay === 'day') {
+                    body.style.background = 'linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%)';
+                } else if (timeOfDay === 'sunset') {
+                    body.style.background = 'linear-gradient(to bottom, #FF6B6B 0%, #FFD93D 50%, #FFA500 100%)';
+                } else if (timeOfDay === 'night') {
+                    body.style.background = 'linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%)';
+                }
+
+                // Stop rain
+                stopRain();
+            }
+        }
+
+        function startRain() {
+            // Clear any existing rain interval
+            if (rainInterval) return;
+
+            // Spawn raindrops periodically
+            rainInterval = setInterval(() => {
+                createRaindrop();
+            }, 100); // Create a raindrop every 100ms
+        }
+
+        function stopRain() {
+            // Stop spawning rain
+            if (rainInterval) {
+                clearInterval(rainInterval);
+                rainInterval = null;
+            }
+
+            // Remove all existing raindrops
+            raindrops.forEach(drop => {
+                if (drop.element && drop.element.parentNode) {
+                    drop.element.remove();
+                }
+            });
+            raindrops = [];
+        }
+
+        function createRaindrop() {
+            const drop = document.createElement('div');
+            drop.className = 'raindrop';
+
+            // Random horizontal position
+            const x = Math.random() * window.innerWidth;
+            drop.style.left = x + 'px';
+
+            // Random animation duration (speed)
+            const duration = 0.5 + Math.random() * 0.5; // 0.5-1s
+            drop.style.animationDuration = duration + 's';
+
+            document.body.appendChild(drop);
+
+            // Store raindrop reference
+            raindrops.push({ element: drop });
+
+            // Remove raindrop after animation completes
+            setTimeout(() => {
+                if (drop.parentNode) {
+                    drop.remove();
+                }
+                // Remove from array
+                const index = raindrops.findIndex(r => r.element === drop);
+                if (index > -1) {
+                    raindrops.splice(index, 1);
+                }
+            }, duration * 1000);
+        }
+
+        function spawnAirplane(x, y) {
+            if (!airplaneEnabled) return;
+
+            // Don't spawn if we already have 7 airplanes on screen
+            if (airplanes.length >= 7) return;
+
+            // 100% total chance to spawn (15% + 15% + 20% + 20% + 15% + 15%)
+            const rand = Math.random() * 100;
+            // Everyone spawns now!
+
+            const airplane = document.createElement('div');
+            airplane.className = 'airplane';
+            airplane.textContent = '✈️';
+
+            // Random size
+            const scale = 0.3 + Math.random() * 2.2;
+            airplane.style.fontSize = (40 * scale) + 'px';
+
+            // Random speed
+            const speed = 0.5 + Math.random() * 1.5;
+
+            let speedX, speedY;
+
+            // Decide which airplane type to spawn
+            if (rand < 15) {
+                // Airplane 1: Normal (0 degrees) - flies UP-RIGHT ↗️
+                airplane.style.transform = 'rotate(0deg)';
+                speedX = speed;    // Move right
+                speedY = -speed;   // Move up
+            } else if (rand < 30) {
+                // Airplane 2: Rotated 90 degrees left (-90 degrees) - flies UP-LEFT ↖️
+                airplane.style.transform = 'rotate(-90deg)';
+                speedX = -speed;   // Move left
+                speedY = -speed;   // Move up
+            } else if (rand < 50) {
+                // Airplane 3: Rotated 45 degrees right - flies straight RIGHT ➡️
+                airplane.style.transform = 'rotate(45deg)';
+                speedX = speed;    // Move right
+                speedY = 0;        // No vertical movement
+            } else if (rand < 70) {
+                // Airplane 4: Rotated 135 degrees left - flies straight LEFT ⬅️
+                airplane.style.transform = 'rotate(-135deg)';
+                speedX = -speed;   // Move left
+                speedY = 0;        // No vertical movement
+            } else if (rand < 85) {
+                // Airplane 5: Rotated 90 degrees right - flies DOWN-RIGHT ↘️
+                airplane.style.transform = 'rotate(90deg)';
+                speedX = speed;    // Move right
+                speedY = speed;    // Move down
+            } else {
+                // Airplane 6: Rotated 180 degrees left - flies DOWN-LEFT ↙️
+                airplane.style.transform = 'rotate(-180deg)';
+                speedX = -speed;   // Move left
+                speedY = speed;    // Move down
+            }
+
+            // Set initial position
+            airplane.style.left = x + 'px';
+            airplane.style.top = y + 'px';
+
+            document.body.appendChild(airplane);
+
+            // Store airplane data
+            const airplaneData = {
+                element: airplane,
+                x: x,
+                y: y,
+                speedX: speedX,
+                speedY: speedY
+            };
+
+            airplanes.push(airplaneData);
+        }
+
+        function updateAirplanes() {
+            for (let i = airplanes.length - 1; i >= 0; i--) {
+                const plane = airplanes[i];
+
+                // Update position
+                plane.x += plane.speedX;
+                plane.y += plane.speedY;
+
+                plane.element.style.left = plane.x + 'px';
+                plane.element.style.top = plane.y + 'px';
+
+                // Add glow effect during nighttime
+                if (timeOfDay === 'night') {
+                    plane.element.classList.add('night-glow');
+                } else {
+                    plane.element.classList.remove('night-glow');
+                }
+
+                // Remove if off screen
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                if (plane.x < -200 || plane.x > screenWidth + 200 ||
+                    plane.y < -200 || plane.y > screenHeight + 200) {
+                    plane.element.remove();
+                    airplanes.splice(i, 1);
+                }
+            }
+        }
+
+        // Add click listener for spawning airplanes
+        document.addEventListener('click', (e) => {
+            // Don't spawn if clicking on a button
+            if (e.target.tagName === 'BUTTON') return;
+
+            if (airplaneEnabled) {
+                spawnAirplane(e.clientX, e.clientY);
+            }
+        });
 
         function cycleTime() {
             const button = document.querySelector('.time-button');
             const body = document.body;
             const sun = document.querySelector('.sun');
+            const moon = document.querySelector('.moon');
             const screenHeight = window.innerHeight;
 
             // Disable button during animation
             button.disabled = true;
-
-            // Enable manual control mode (stops automatic sun movement)
-            manualTimeControl = true;
 
             if (timeOfDay === 'day') {
                 timeOfDay = 'sunset';
@@ -526,6 +872,10 @@
                 sun.style.top = (screenHeight + 100) + 'px';
                 sunPosition = screenHeight + 100; // Update sunPosition variable
 
+                // Bring moon down to top position
+                moon.style.top = '-100px';
+                moonPosition = -100;
+
                 // After animation completes, teleport sun to above screen (invisible)
                 setTimeout(() => {
                     sun.style.transition = 'none'; // Disable transition for instant teleport
@@ -542,9 +892,23 @@
                 timeOfDay = 'day';
                 button.textContent = '☀️';
                 body.style.background = 'linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%)';
-                // Sun is already at -250px (above screen), move it down to top visible position
+                // Moon goes down below screen
+                moon.style.top = (screenHeight + 100) + 'px';
+                moonPosition = screenHeight + 100;
+
+                // Sun comes down from above
                 sun.style.top = '-100px';
                 sunPosition = -100; // Update sunPosition variable
+
+                // After animation, teleport moon back to top (invisible)
+                setTimeout(() => {
+                    moon.style.transition = 'none';
+                    moon.style.top = '-250px';
+                    moonPosition = -250;
+                    setTimeout(() => {
+                        moon.style.transition = 'top 2s ease-in-out';
+                    }, 50);
+                }, 2000);
 
                 // Re-enable button after animation completes (2 seconds)
                 setTimeout(() => {
@@ -630,31 +994,90 @@
         // Start the update loop with requestAnimationFrame
         function animationLoop() {
             updateCloudSpeeds();
+            updateAirplanes();
             requestAnimationFrame(animationLoop);
         }
         animationLoop();
 
-        // Sun movement - moves down slowly like the real sun setting
+        // Sun and Moon movement - moves down slowly
         let sunPosition = -100; // Start at top
+        let moonPosition = -250; // Start hidden above screen
         const sun = document.querySelector('.sun');
+        const moon = document.querySelector('.moon');
 
         function moveSun() {
-            // Don't auto-move if user is manually controlling time
-            if (manualTimeControl) return;
-
-            sunPosition += 30; // Move down 30px every 10 seconds
-
-            sun.style.top = sunPosition + 'px';
-
-            // Reset when sun goes below screen
             const screenHeight = window.innerHeight;
-            if (sunPosition > screenHeight + 100) {
-                sunPosition = -100;
+            const body = document.body;
+            const button = document.querySelector('.time-button');
+
+            // Move sun or moon depending on time of day
+            if (timeOfDay === 'day') {
+                sunPosition += 30; // Move down 30px every 6 seconds
+                sun.style.top = sunPosition + 'px';
+
+                // Check if sun reached 60% of screen - trigger sunset
+                if (sunPosition >= screenHeight * 0.6) {
+                    timeOfDay = 'sunset';
+                    button.textContent = '🌅';
+                    body.style.background = 'linear-gradient(to bottom, #FF6B6B 0%, #FFD93D 50%, #FFA500 100%)';
+                }
+            } else if (timeOfDay === 'sunset') {
+                sunPosition += 30; // Move down 30px every 6 seconds
+                sun.style.top = sunPosition + 'px';
+
+                // Check if sun went below screen - trigger night
+                if (sunPosition >= screenHeight + 100) {
+                    timeOfDay = 'night';
+                    button.textContent = '🌙';
+                    body.style.background = 'linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%)';
+
+                    // Teleport sun back to top after it disappears
+                    setTimeout(() => {
+                        sun.style.transition = 'none';
+                        sunPosition = -250; // Far above screen
+                        sun.style.top = sunPosition + 'px';
+                        setTimeout(() => {
+                            sun.style.transition = 'top 2s ease-in-out';
+                        }, 50);
+                    }, 1000);
+
+                    // Bring moon down to top position
+                    setTimeout(() => {
+                        moonPosition = -100;
+                        moon.style.top = moonPosition + 'px';
+                    }, 1000);
+                }
+            } else if (timeOfDay === 'night') {
+                moonPosition += 30; // Move moon down 30px every 6 seconds
+                moon.style.top = moonPosition + 'px';
+
+                // Check if moon went below screen - trigger day
+                if (moonPosition > screenHeight) {
+                    timeOfDay = 'day';
+                    button.textContent = '☀️';
+                    body.style.background = 'linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%)';
+
+                    // Teleport moon back to top after it disappears
+                    setTimeout(() => {
+                        moon.style.transition = 'none';
+                        moonPosition = -250; // Far above screen
+                        moon.style.top = moonPosition + 'px';
+                        setTimeout(() => {
+                            moon.style.transition = 'top 2s ease-in-out';
+                        }, 50);
+                    }, 1000);
+
+                    // Bring sun down from above
+                    setTimeout(() => {
+                        sunPosition = -100;
+                        sun.style.top = sunPosition + 'px';
+                    }, 1000);
+                }
             }
         }
 
-        // Move sun every 10 seconds
-        setInterval(moveSun, 10000);
+        // Move sun/moon every 6 seconds
+        setInterval(moveSun, 6000);
     </script>
 </body>
 </html>

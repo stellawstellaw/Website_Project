@@ -8,7 +8,8 @@
       "Bash(takeown:*)",
       "Bash(git push:*)",
       "Bash(mv:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(mkdir:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
