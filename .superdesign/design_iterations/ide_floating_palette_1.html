@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticker Sheet - Floating Palette</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Chewy', cursive;
+            height: 100vh;
+            overflow: hidden;
+            background: radial-gradient(circle at top right, #FFE8F5, #FFF9E6);
+        }
+
+        /* Canvas */
+        .canvas {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            cursor: crosshair;
+        }
+
+        /* Floating Palette */
+        .palette {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            width: 220px;
+            background: linear-gradient(135deg, rgba(255, 214, 232, 0.95), rgba(180, 215, 255, 0.95));
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .palette-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .palette-title {
+            font-size: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .reset-btn {
+            background-color: #FF6B6B;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .reset-btn:hover {
+            background-color: #FF5252;
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .sticker-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            color: #666;
+            font-family: 'Chewy', cursive;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            transform: scale(1.05);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .tab-btn.active {
+            background-color: #FFD700;
+            border-color: #FFA500;
+            color: #333;
+            transform: scale(1.05);
+        }
+
+        .sticker-preview {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .preview-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .preview-emojis {
+            font-size: 24px;
+            line-height: 1.5;
+        }
+
+        .sticker {
+            position: absolute;
+            font-size: 48px;
+            cursor: move;
+            user-select: none;
+            animation: bounceRotate 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes bounceRotate {
+            0% {
+                transform: scale(0) rotate(-360deg);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.3) rotate(20deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .instruction {
+            position: absolute;
+            top: 50%;
+            left: 40%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px 60px;
+            border-radius: 30px;
+            font-size: 28px;
+            color: #aaa;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+            text-align: center;
+        }
+
+        /* Draggable hint */
+        .drag-hint {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+            opacity: 0.4;
+            cursor: move;
+        }
+
+        @media (max-width: 768px) {
+            .palette {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                width: auto;
+            }
+
+            .instruction {
+                left: 50%;
+                font-size: 20px;
+                padding: 30px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas Area -->
+    <div class="canvas">
+        <div class="instruction">
+            🎨 Click anywhere<br>to create art!
+        </div>
+    </div>
+
+    <!-- Floating Palette -->
+    <div class="palette">
+        <div class="drag-hint">⋮⋮</div>
+        <div class="palette-header">
+            <div class="palette-title">Stickers</div>
+            <button class="reset-btn" title="Clear all">🗑️</button>
+        </div>
+
+        <div class="sticker-tabs">
+            <button class="tab-btn active" data-set="animals">🐶</button>
+            <button class="tab-btn" data-set="food">🍕</button>
+        </div>
+
+        <div class="sticker-preview">
+            <div class="preview-text">Current Set:</div>
+            <div class="preview-emojis" id="preview">🐶 🐱 🐭 🐹 🐰</div>
+        </div>
+    </div>
+
+    <script>
+        const stickerSets = {
+            animals: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯'],
+            food: ['🍕', '🍔', '🍟', '🌮', '🍿', '🍩', '🍪', '🎂', '🍦', '🍓']
+        };
+
+        let currentSet = 'animals';
+        let stickers = [];
+
+        // Update preview
+        function updatePreview() {
+            const preview = document.getElementById('preview');
+            preview.textContent = stickerSets[currentSet].slice(0, 5).join(' ');
+        }
+
+        // Sticker set switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentSet = btn.dataset.set;
+                updatePreview();
+            });
+        });
+
+        // Canvas click to place sticker
+        document.querySelector('.canvas').addEventListener('click', (e) => {
+            // Don't place sticker if clicking on palette
+            if (e.target.closest('.palette')) return;
+
+            const sticker = document.createElement('div');
+            sticker.className = 'sticker';
+
+            // Random sticker from current set
+            const randomSticker = stickerSets[currentSet][Math.floor(Math.random() * stickerSets[currentSet].length)];
+            sticker.textContent = randomSticker;
+
+            // Position at click location
+            sticker.style.left = (e.clientX - 24) + 'px';
+            sticker.style.top = (e.clientY - 24) + 'px';
+
+            document.querySelector('.canvas').appendChild(sticker);
+            stickers.push(sticker);
+        });
+
+        // Reset button
+        document.querySelector('.reset-btn').addEventListener('click', () => {
+            stickers.forEach(sticker => sticker.remove());
+            stickers = [];
+        });
+
+        // Initialize preview
+        updatePreview();
+    </script>
+</body>
+</html>
