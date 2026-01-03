@@ -357,6 +357,16 @@
             transform: scale(0.98);
         }
 
+        .time-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .time-button:disabled:hover {
+            background-color: #5BA3D0;
+            transform: scale(1);
+        }
+
         .wind-aura {
             position: fixed;
             width: 150px;
@@ -482,6 +492,7 @@
         let mouseX = 0;
         let mouseY = 0;
         let timeOfDay = 'day'; // day, sunset, night
+        let manualTimeControl = false; // Track if user is manually controlling time
 
         function cycleTime() {
             const button = document.querySelector('.time-button');
@@ -489,26 +500,42 @@
             const sun = document.querySelector('.sun');
             const screenHeight = window.innerHeight;
 
+            // Disable button during animation
+            button.disabled = true;
+
+            // Enable manual control mode (stops automatic sun movement)
+            manualTimeControl = true;
+
             if (timeOfDay === 'day') {
                 timeOfDay = 'sunset';
                 button.textContent = '🌅';
                 body.style.background = 'linear-gradient(to bottom, #FF6B6B 0%, #FFD93D 50%, #FFA500 100%)';
                 // Move sun to middle/bottom for sunset
                 sun.style.top = (screenHeight * 0.6) + 'px';
+                sunPosition = screenHeight * 0.6; // Update sunPosition variable
+
+                // Re-enable button after animation completes (2 seconds)
+                setTimeout(() => {
+                    button.disabled = false;
+                }, 2000);
             } else if (timeOfDay === 'sunset') {
                 timeOfDay = 'night';
                 button.textContent = '🌙';
                 body.style.background = 'linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%)';
                 // Move sun below screen (set)
                 sun.style.top = (screenHeight + 100) + 'px';
+                sunPosition = screenHeight + 100; // Update sunPosition variable
 
                 // After animation completes, teleport sun to above screen (invisible)
                 setTimeout(() => {
                     sun.style.transition = 'none'; // Disable transition for instant teleport
                     sun.style.top = '-250px'; // Far above screen
+                    sunPosition = -250; // Update sunPosition variable
                     // Re-enable transition after teleport
                     setTimeout(() => {
                         sun.style.transition = 'top 2s ease-in-out';
+                        // Re-enable button after full animation sequence
+                        button.disabled = false;
                     }, 50);
                 }, 2000); // Wait for sunset->night animation to finish
             } else {
@@ -516,7 +543,13 @@
                 button.textContent = '☀️';
                 body.style.background = 'linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%)';
                 // Sun is already at -250px (above screen), move it down to top visible position
-                sun.style.top = '-50px';
+                sun.style.top = '-100px';
+                sunPosition = -100; // Update sunPosition variable
+
+                // Re-enable button after animation completes (2 seconds)
+                setTimeout(() => {
+                    button.disabled = false;
+                }, 2000);
             }
         }
 
@@ -602,10 +635,13 @@
         animationLoop();
 
         // Sun movement - moves down slowly like the real sun setting
-        let sunPosition = -50; // Start at top
+        let sunPosition = -100; // Start at top
         const sun = document.querySelector('.sun');
 
         function moveSun() {
+            // Don't auto-move if user is manually controlling time
+            if (manualTimeControl) return;
+
             sunPosition += 30; // Move down 30px every 10 seconds
 
             sun.style.top = sunPosition + 'px';
@@ -613,7 +649,7 @@
             // Reset when sun goes below screen
             const screenHeight = window.innerHeight;
             if (sunPosition > screenHeight + 100) {
-                sunPosition = -50;
+                sunPosition = -100;
             }
         }
 
