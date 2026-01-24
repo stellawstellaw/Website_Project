@@ -1,0 +1,45 @@
+version: "1.0.0"
+generatedBy: "edp-6-mcp"
+timestamp: "2026-01-24T00:00:00Z"
+originalIntent: "Create a bouncing button in animations.html with GSAP animation (y: -50, bounce.out ease, yoyo: true, repeat: 1)"
+scope:
+  allowedPaths:
+    - ".superdesign/animations.html"
+  forbiddenPaths:
+    - "index.html"
+    - "sky.html"
+    - "*.css"
+    - "*.js"
+  newFiles:
+    - ".superdesign/animations.html"
+apiContracts:
+  - name: "bouncer click handler"
+    type: "function"
+    params: []
+    returns: "void"
+    required: true
+acceptanceCriteria:
+  - id: "AC-001"
+    description: "Button exists with correct id"
+    given: "Page is loaded"
+    when: "User inspects DOM"
+    then: "Button element with id='bouncer' exists"
+  - id: "AC-002"
+    description: "Button is styled"
+    given: "Page is loaded"
+    when: "User views button"
+    then: "Button has background color, padding, and border-radius"
+  - id: "AC-003"
+    description: "Button bounces on click"
+    given: "Button is visible"
+    when: "User clicks the button"
+    then: "Button animates up 50px with bounce easing and returns"
+nonGoals:
+  - "Modify any other project files"
+  - "Add additional animations beyond bouncing button"
+  - "Style matching main project theme"
+complexityBudget:
+  maxNewFunctions: 1
+  maxNewFiles: 1
+  maxLinesOfCode: 50
+  maxDependencies: 1

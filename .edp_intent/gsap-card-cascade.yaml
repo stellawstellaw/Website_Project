@@ -1,0 +1,49 @@
+version: "1.0.0"
+generatedBy: "edp-6-mcp"
+timestamp: "2026-01-24T00:00:00Z"
+originalIntent: "Challenge 2: Build a Card Cascade Entrance - Create 5 cards that cascade in from the left when page loads using gsap.from() with stagger"
+scope:
+  allowedPaths:
+    - ".superdesign/animations.html"
+  forbiddenPaths:
+    - "index.html"
+    - "sky.html"
+    - "*.css"
+    - "*.js"
+  newFiles: []
+apiContracts:
+  - name: "card cascade animation"
+    type: "function"
+    params: []
+    returns: "void"
+    required: true
+acceptanceCriteria:
+  - id: "AC-001"
+    description: "Container with 5 cards exists"
+    given: "Page is loaded"
+    when: "User inspects DOM"
+    then: "Container div with 5 child divs with class 'card' exists"
+  - id: "AC-002"
+    description: "Cards are styled"
+    given: "Page is loaded"
+    when: "User views cards"
+    then: "Cards have width, height, background color, and margin"
+  - id: "AC-003"
+    description: "Cards cascade in on page load"
+    given: "Page loads"
+    when: "Animation completes"
+    then: "Cards animate from x:-200, opacity:0 with stagger:0.15 and power2.out ease"
+  - id: "AC-004"
+    description: "Challenge 1 still works"
+    given: "Page is loaded"
+    when: "User clicks bouncer button"
+    then: "Button still bounces as before"
+nonGoals:
+  - "Modify Challenge 1 functionality"
+  - "Add click interactions to cards"
+  - "Add hover effects to cards"
+complexityBudget:
+  maxNewFunctions: 1
+  maxNewFiles: 0
+  maxLinesOfCode: 30
+  maxDependencies: 0
