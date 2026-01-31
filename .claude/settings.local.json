@@ -14,7 +14,9 @@
       "mcp__ct-devmcp__do_ide",
       "mcp__ct-devmcp__do_dis",
       "mcp__ct-devmcp__do_pla",
-      "mcp__ct-devmcp__do_bld"
+      "mcp__ct-devmcp__do_bld",
+      "mcp__context7__resolve-library-id",
+      "mcp__ct-devmcp__do_fix"
     ]
   },
   "enableAllProjectMcpServers": true,

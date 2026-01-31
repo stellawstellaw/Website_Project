@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Transition Option C: Split Curtains</title>
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;500;600;700&family=Sour+Gummy:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Sour Gummy', sans-serif;
+            background: linear-gradient(180deg, #fff 0%, rgb(255, 232, 244) 100%);
+            min-height: 100vh;
+            color: #2D3748;
+            overflow-x: hidden;
+        }
+        h1, h2, .logo { font-family: 'DynaPuff', cursive; }
+
+        /* Info Banner */
+        .info-banner {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+        .info-banner h2 { margin-bottom: 0.5rem; }
+        .info-banner p { opacity: 0.9; font-size: 0.9rem; }
+
+        /* Page Transition - Split Curtains */
+        .curtain-left, .curtain-right {
+            position: fixed;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: #FFD4E6;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .curtain-left {
+            left: -50%;
+        }
+        .curtain-right {
+            right: -50%;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 1rem 2rem;
+            border-bottom: 3px solid rgb(183, 209, 232);
+            position: relative;
+            z-index: 10;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.6rem; font-weight: 700; }
+        nav ul { display: flex; list-style: none; gap: 0.5rem; }
+        nav a {
+            text-decoration: none;
+            color: #718096;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        nav a:hover { background: #FFFACD; color: #2D3748; }
+        nav a.active { background: rgb(183, 209, 232); color: #2D3748; }
+
+        /* Page Content */
+        .page-content {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+        }
+        .page-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: rgb(255, 212, 230);
+        }
+        .page-content p {
+            font-size: 1.2rem;
+            color: #718096;
+            margin-bottom: 2rem;
+        }
+
+        /* Demo Controls */
+        .demo-controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+        }
+        .demo-btn {
+            background: #06b6d4;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Sour Gummy', sans-serif;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+        }
+        .demo-btn:hover { transform: scale(1.05); }
+
+        /* Code Preview */
+        .code-preview {
+            background: #1a1a2e;
+            color: #eee;
+            padding: 2rem;
+            margin: 2rem;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            text-align: left;
+            position: relative;
+            z-index: 5;
+        }
+        .code-preview .comment { color: #6b7280; }
+        .code-preview .keyword { color: #c084fc; }
+        .code-preview .string { color: #86efac; }
+        .code-preview .number { color: #fbbf24; }
+    </style>
+</head>
+<body>
+    <div class="info-banner">
+        <h2>Option C: Split Curtains</h2>
+        <p>Two pink panels slide in from sides, meet in middle, then slide away. Theatrical and dramatic!</p>
+    </div>
+
+    <!-- Page Transition - Curtains -->
+    <div class="curtain-left"></div>
+    <div class="curtain-right"></div>
+
+    <header>
+        <div class="header-content">
+            <span class="logo">My Portfolio</span>
+            <nav><ul>
+                <li><a class="active" onclick="navigateTo('home')">Home</a></li>
+                <li><a onclick="navigateTo('about')">About</a></li>
+                <li><a onclick="navigateTo('projects')">Projects</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="page-content" id="page-home">
+        <h1>Welcome!</h1>
+        <p>Click the nav links to see the curtain transition!</p>
+        <p>This is the <strong>Home</strong> page.</p>
+    </div>
+
+    <div class="page-content" id="page-about" style="display: none;">
+        <h1>About Me</h1>
+        <p>This is the <strong>About</strong> page.</p>
+        <p>The curtains create a theatrical reveal!</p>
+    </div>
+
+    <div class="page-content" id="page-projects" style="display: none;">
+        <h1>My Projects</h1>
+        <p>This is the <strong>Projects</strong> page.</p>
+        <p>Dramatic entrance for each page!</p>
+    </div>
+
+    <div class="code-preview">
+        <span class="comment">// OPTION C: Split Curtains</span><br>
+        <span class="comment">// Two panels slide in from sides, then slide away</span><br><br>
+        <span class="keyword">function</span> pageTransition(callback) {<br>
+        &nbsp;&nbsp;<span class="keyword">const</span> left = document.querySelector(<span class="string">'.curtain-left'</span>);<br>
+        &nbsp;&nbsp;<span class="keyword">const</span> right = document.querySelector(<span class="string">'.curtain-right'</span>);<br>
+        &nbsp;&nbsp;<span class="keyword">const</span> tl = gsap.timeline();<br><br>
+        &nbsp;&nbsp;<span class="comment">// Slide curtains in from sides</span><br>
+        &nbsp;&nbsp;tl.to(left, {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;left: <span class="string">'0%'</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;duration: <span class="number">0.4</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;ease: <span class="string">'power2.inOut'</span><br>
+        &nbsp;&nbsp;})<br>
+        &nbsp;&nbsp;.to(right, {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;right: <span class="string">'0%'</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;duration: <span class="number">0.4</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;ease: <span class="string">'power2.inOut'</span><br>
+        &nbsp;&nbsp;}, <span class="string">'<'</span>) <span class="comment">// Same time as left</span><br><br>
+        &nbsp;&nbsp;<span class="comment">// Change page content</span><br>
+        &nbsp;&nbsp;.call(callback)<br><br>
+        &nbsp;&nbsp;<span class="comment">// Slide curtains away</span><br>
+        &nbsp;&nbsp;.to(left, {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;left: <span class="string">'-50%'</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;duration: <span class="number">0.4</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;ease: <span class="string">'power2.inOut'</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;delay: <span class="number">0.1</span><br>
+        &nbsp;&nbsp;})<br>
+        &nbsp;&nbsp;.to(right, {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;right: <span class="string">'-50%'</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;duration: <span class="number">0.4</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;ease: <span class="string">'power2.inOut'</span><br>
+        &nbsp;&nbsp;}, <span class="string">'<'</span>);<br>
+        }
+    </div>
+
+    <div class="demo-controls">
+        <button class="demo-btn" onclick="navigateTo('about')">Demo Transition</button>
+    </div>
+
+    <script>
+        let currentPage = 'home';
+
+        function navigateTo(page) {
+            if (page === currentPage) return;
+
+            const left = document.querySelector('.curtain-left');
+            const right = document.querySelector('.curtain-right');
+            const tl = gsap.timeline();
+
+            // Slide curtains in from sides
+            tl.to(left, {
+                left: '0%',
+                duration: 0.4,
+                ease: 'power2.inOut'
+            })
+            .to(right, {
+                right: '0%',
+                duration: 0.4,
+                ease: 'power2.inOut'
+            }, '<')
+            // Change page content
+            .call(() => {
+                document.getElementById('page-' + currentPage).style.display = 'none';
+                document.getElementById('page-' + page).style.display = 'block';
+
+                // Update nav
+                document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+                document.querySelector(`nav a[onclick="navigateTo('${page}')"]`).classList.add('active');
+
+                currentPage = page;
+            })
+            // Slide curtains away
+            .to(left, {
+                left: '-50%',
+                duration: 0.4,
+                ease: 'power2.inOut',
+                delay: 0.1
+            })
+            .to(right, {
+                right: '-50%',
+                duration: 0.4,
+                ease: 'power2.inOut'
+            }, '<');
+        }
+    </script>
+</body>
+</html>

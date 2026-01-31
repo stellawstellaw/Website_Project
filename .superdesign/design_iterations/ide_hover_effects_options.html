@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hover Effects Options Comparison</title>
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;500;600;700&family=Sour+Gummy:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --pastel-pink: rgb(183, 209, 232);
+            --pastel-blue: rgb(255, 251, 173);
+            --pastel-green: rgb(186, 255, 219);
+            --pastel-purple: rgb(209, 165, 230);
+            --text-dark: #2D3748;
+            --text-light: #718096;
+            --bg-card: white;
+            --shadow-color: rgba(0,0,0,0.05);
+            --shadow-hover: rgba(0,0,0,0.1);
+            --btn-primary: rgb(232, 204, 255);
+            --btn-secondary: rgb(212, 212, 255);
+        }
+        body {
+            font-family: 'Sour Gummy', sans-serif;
+            background: linear-gradient(180deg, #fff 0%, rgb(255, 232, 244) 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            padding: 2rem;
+        }
+        h1, h2, h3 { font-family: 'DynaPuff', cursive; }
+
+        /* Info Banner */
+        .info-banner {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .info-banner h2 { margin-bottom: 0.5rem; }
+        .info-banner p { opacity: 0.9; font-size: 0.9rem; }
+
+        /* Option Container */
+        .option-container {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+        .option-container h2 {
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        .option-container > p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        /* Demo Area */
+        .demo-area {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border: none;
+            font-family: 'Sour Gummy', sans-serif;
+            display: inline-block;
+        }
+        .btn-primary { background: var(--btn-primary); color: var(--text-dark); }
+        .btn-secondary { background: var(--btn-secondary); color: var(--text-dark); }
+
+        /* Cards */
+        .mini-card {
+            background: var(--bg-card);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            text-align: center;
+            min-width: 140px;
+            cursor: pointer;
+        }
+        .mini-card:nth-child(1) { border-top: 4px solid var(--pastel-pink); }
+        .mini-card:nth-child(2) { border-top: 4px solid var(--pastel-blue); }
+        .mini-card:nth-child(3) { border-top: 4px solid var(--pastel-green); }
+        .mini-card:nth-child(4) { border-top: 4px solid var(--pastel-purple); }
+        .mini-card-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .mini-card h3 { font-size: 0.9rem; }
+        .mini-card p { font-size: 0.8rem; color: var(--text-light); }
+
+        /* Highlight Cards */
+        .highlight-card {
+            background: linear-gradient(135deg, #fff 0%, #f7fafc 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            min-width: 200px;
+            max-width: 280px;
+            cursor: pointer;
+        }
+        .highlight-card:nth-child(1) { border-top: 4px solid var(--pastel-pink); }
+        .highlight-card:nth-child(2) { border-top: 4px solid var(--pastel-blue); }
+        .highlight-card:nth-child(3) { border-top: 4px solid var(--pastel-green); }
+
+        .highlight-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+        .highlight-card:nth-child(1) .highlight-icon { background: var(--pastel-pink); }
+        .highlight-card:nth-child(2) .highlight-icon { background: var(--pastel-blue); }
+        .highlight-card:nth-child(3) .highlight-icon { background: var(--pastel-green); }
+
+        /* Code Preview */
+        .code-preview {
+            background: #1a1a2e;
+            color: #eee;
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            overflow-x: auto;
+        }
+        .code-preview .comment { color: #6b7280; }
+        .code-preview .keyword { color: #c084fc; }
+        .code-preview .string { color: #86efac; }
+        .code-preview .number { color: #fbbf24; }
+
+        /* Section Divider */
+        .section-label {
+            text-align: center;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="info-banner">
+        <h2>Hover Effects Options</h2>
+        <p>Hover over buttons and cards to compare different GSAP hover animation approaches!</p>
+    </div>
+
+    <!-- OPTION A: Subtle Scale + Shadow -->
+    <div class="option-container">
+        <h2>Option A: Subtle Scale + Shadow</h2>
+        <p>Gentle scale (1.05) with expanding shadow. Professional and refined.</p>
+
+        <div class="section-label">BUTTONS</div>
+        <div class="demo-area">
+            <button class="btn btn-primary btn-a">See Projects</button>
+            <button class="btn btn-secondary btn-a">About Me</button>
+        </div>
+
+        <div class="section-label">CARDS</div>
+        <div class="demo-area">
+            <div class="mini-card card-a"><div class="mini-card-icon">🎨</div><h3>Creative</h3><p>Art & Design</p></div>
+            <div class="mini-card card-a"><div class="mini-card-icon">💡</div><h3>Ideas</h3><p>Experiments</p></div>
+            <div class="mini-card card-a"><div class="mini-card-icon">🌱</div><h3>Growing</h3><p>Learning</p></div>
+        </div>
+
+        <div class="code-preview">
+            <span class="comment">// OPTION A: Subtle Scale + Shadow</span><br>
+            element.addEventListener(<span class="string">'mouseenter'</span>, () => {<br>
+            &nbsp;&nbsp;gsap.to(element, {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;scale: <span class="number">1.05</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;boxShadow: <span class="string">'0 10px 30px rgba(0,0,0,0.15)'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;duration: <span class="number">0.3</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;ease: <span class="string">'power2.out'</span><br>
+            &nbsp;&nbsp;});<br>
+            });<br>
+            element.addEventListener(<span class="string">'mouseleave'</span>, () => {<br>
+            &nbsp;&nbsp;gsap.to(element, {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;scale: <span class="number">1</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;boxShadow: <span class="string">'0 4px 15px rgba(0,0,0,0.05)'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;duration: <span class="number">0.3</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;ease: <span class="string">'power2.out'</span><br>
+            &nbsp;&nbsp;});<br>
+            });
+        </div>
+    </div>
+
+    <!-- OPTION B: Bouncy Scale -->
+    <div class="option-container">
+        <h2>Option B: Bouncy Scale</h2>
+        <p>Scale with back easing for overshoot effect. Fun and playful!</p>
+
+        <div class="section-label">BUTTONS</div>
+        <div class="demo-area">
+            <button class="btn btn-primary btn-b">See Projects</button>
+            <button class="btn btn-secondary btn-b">About Me</button>
+        </div>
+
+        <div class="section-label">CARDS</div>
+        <div class="demo-area">
+            <div class="mini-card card-b"><div class="mini-card-icon">🎨</div><h3>Creative</h3><p>Art & Design</p></div>
+            <div class="mini-card card-b"><div class="mini-card-icon">💡</div><h3>Ideas</h3><p>Experiments</p></div>
+            <div class="mini-card card-b"><div class="mini-card-icon">🌱</div><h3>Growing</h3><p>Learning</p></div>
+        </div>
+
+        <div class="code-preview">
+            <span class="comment">// OPTION B: Bouncy Scale</span><br>
+            element.addEventListener(<span class="string">'mouseenter'</span>, () => {<br>
+            &nbsp;&nbsp;gsap.to(element, {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;scale: <span class="number">1.08</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;duration: <span class="number">0.4</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;ease: <span class="string">'back.out(1.7)'</span><br>
+            &nbsp;&nbsp;});<br>
+            });<br>
+            element.addEventListener(<span class="string">'mouseleave'</span>, () => {<br>
+            &nbsp;&nbsp;gsap.to(element, {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;scale: <span class="number">1</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;duration: <span class="number">0.3</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;ease: <span class="string">'power2.out'</span><br>
+            &nbsp;&nbsp;});<br>
+            });
+        </div>
+    </div>
+
+    <!-- OPTION C: Lift + Rotate Micro -->
+    <div class="option-container">
+        <h2>Option C: Lift + Micro Rotate</h2>
+        <p>Subtle Y lift with tiny rotation. Whimsical and unique!</p>
+
+        <div class="section-label">BUTTONS</div>
+        <div class="demo-area">
+            <button class="btn btn-primary btn-c">See Projects</button>
+            <button class="btn btn-secondary btn-c">About Me</button>
+        </div>
+
+        <div class="section-label">CARDS</div>
+        <div class="demo-area">
+            <div class="mini-card card-c"><div class="mini-card-icon">🎨</div><h3>Creative</h3><p>Art & Design</p></div>
+            <div class="mini-card card-c"><div class="mini-card-icon">💡</div><h3>Ideas</h3><p>Experiments</p></div>
+            <div class="mini-card card-c"><div class="mini-card-icon">🌱</div><h3>Growing</h3><p>Learning</p></div>
+        </div>
+
+        <div class="code-preview">
+            <span class="comment">// OPTION C: Lift + Micro Rotate</span><br>
+            element.addEventListener(<span class="string">'mouseenter'</span>, () => {<br>
+            &nbsp;&nbsp;gsap.to(element, {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;y: <span class="number">-8</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;rotation: <span class="number">2</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;boxShadow: <span class="string">'0 15px 35px rgba(0,0,0,0.12)'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;duration: <span class="number">0.35</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;ease: <span class="string">'power2.out'</span><br>
+            &nbsp;&nbsp;});<br>
+            });<br>
+            element.addEventListener(<span class="string">'mouseleave'</span>, () => {<br>
+            &nbsp;&nbsp;gsap.to(element, {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;y: <span class="number">0</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;rotation: <span class="number">0</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;boxShadow: <span class="string">'0 4px 15px rgba(0,0,0,0.05)'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;duration: <span class="number">0.35</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;ease: <span class="string">'power2.out'</span><br>
+            &nbsp;&nbsp;});<br>
+            });
+        </div>
+    </div>
+
+    <script>
+        // OPTION A: Subtle Scale + Shadow
+        document.querySelectorAll('.btn-a, .card-a').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(el, {
+                    scale: 1.05,
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(el, {
+                    scale: 1,
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // OPTION B: Bouncy Scale
+        document.querySelectorAll('.btn-b, .card-b').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(el, {
+                    scale: 1.08,
+                    duration: 0.4,
+                    ease: 'back.out(1.7)'
+                });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(el, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // OPTION C: Lift + Micro Rotate
+        document.querySelectorAll('.btn-c, .card-c').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(el, {
+                    y: -8,
+                    rotation: 2,
+                    boxShadow: '0 15px 35px rgba(0,0,0,0.12)',
+                    duration: 0.35,
+                    ease: 'power2.out'
+                });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(el, {
+                    y: 0,
+                    rotation: 0,
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+                    duration: 0.35,
+                    ease: 'power2.out'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

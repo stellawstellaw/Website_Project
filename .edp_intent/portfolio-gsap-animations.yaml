@@ -1,0 +1,119 @@
+version: "1.0.0"
+generatedBy: "edp-6-mcp"
+timestamp: "2026-01-24T00:00:00Z"
+originalIntent: |
+  Add GSAP animations to portfolio website:
+  - Hero: Playful Bounce (scale + rotation, back easing)
+  - Page Transition: Expanding Circle
+  - Scroll: Scale Pop (back easing)
+  - Hover: Lift + Micro Rotate
+
+scope:
+  allowedPaths:
+    - ".superdesign/design_iterations/thingyportfolio.html"
+    - ".superdesign/design_iterations/about.html"
+    - ".superdesign/design_iterations/projects.html"
+  forbiddenPaths:
+    - "index.html"
+    - "sky.html"
+    - ".superdesign/animations.html"
+  newFiles: []
+
+apiContracts:
+  - name: "initPageLoadAnimations"
+    type: "function"
+    params: []
+    returns: "void"
+    required: true
+    description: "Initializes hero timeline, nav animations, card animations on DOMContentLoaded"
+
+  - name: "initScrollAnimations"
+    type: "function"
+    params: []
+    returns: "void"
+    required: true
+    description: "Registers ScrollTrigger and sets up scroll-triggered scale pop animations"
+
+  - name: "initHoverEffects"
+    type: "function"
+    params: []
+    returns: "void"
+    required: true
+    description: "Attaches mouseenter/mouseleave GSAP animations to buttons and cards"
+
+  - name: "navigateWithTransition"
+    type: "function"
+    params:
+      - name: "targetUrl"
+        type: "string"
+    returns: "void"
+    required: true
+    description: "Triggers expanding circle transition before navigating to new page"
+
+acceptanceCriteria:
+  - id: "AC-001"
+    description: "GSAP library loads from CDN"
+    given: "User opens any portfolio page"
+    when: "Page loads"
+    then: "gsap object is available in window scope"
+
+  - id: "AC-002"
+    description: "Hero title animates with playful bounce"
+    given: "User opens thingyportfolio.html"
+    when: "Page loads"
+    then: "Title spans scale from 0 with rotation and back.out easing"
+
+  - id: "AC-003"
+    description: "Timeline sequences 3+ animations"
+    given: "User opens thingyportfolio.html"
+    when: "Page loads"
+    then: "Nav, hero title, subtitle, buttons, and cards animate in sequence"
+
+  - id: "AC-004"
+    description: "ScrollTrigger activates on scroll"
+    given: "User scrolls to highlights section"
+    when: "Section enters viewport at 70%"
+    then: "Highlight cards scale pop with stagger"
+
+  - id: "AC-005"
+    description: "Page transition works between pages"
+    given: "User clicks nav link"
+    when: "Link is clicked"
+    then: "Pink circle expands, page navigates, circle contracts on new page"
+
+  - id: "AC-006"
+    description: "Hover effects apply to buttons and cards"
+    given: "User hovers over button or card"
+    when: "Mouse enters element"
+    then: "Element lifts up (y: -8) with micro rotation (2deg)"
+
+  - id: "AC-007"
+    description: "Uses gsap.to() animation"
+    given: "Code review"
+    when: "Inspecting hover effects"
+    then: "gsap.to() is used for hover enter/leave"
+
+  - id: "AC-008"
+    description: "Uses gsap.from() animation"
+    given: "Code review"
+    when: "Inspecting page load animations"
+    then: "gsap.from() is used for entrance animations"
+
+  - id: "AC-009"
+    description: "Professional easing (not linear)"
+    given: "Code review"
+    when: "Inspecting all animations"
+    then: "All animations use back, power, or bounce easing"
+
+nonGoals:
+  - "No external JavaScript files - all inline"
+  - "No modifications to existing CSS hover states"
+  - "No animation on index.html or sky.html"
+  - "No additional features beyond PRD"
+  - "No performance optimization beyond reasonable"
+
+complexityBudget:
+  maxNewFunctions: 4
+  maxNewFiles: 0
+  maxLinesOfCode: 150
+  maxDependencies: 2  # gsap.min.js, ScrollTrigger.min.js

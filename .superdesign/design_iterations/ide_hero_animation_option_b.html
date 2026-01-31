@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option B: Subtle Elegance (Hero Animation)</title>
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;500;600;700&family=Sour+Gummy:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --pastel-pink: rgb(183, 209, 232);
+            --pastel-purple: rgb(209, 165, 230);
+            --text-dark: #2D3748;
+            --text-light: #718096;
+            --bg-primary: rgb(255, 255, 255);
+            --bg-secondary: rgb(255, 232, 244);
+            --bg-card: white;
+            --shadow-color: rgba(0,0,0,0.05);
+            --btn-primary: rgb(232, 204, 255);
+            --btn-secondary: rgb(212, 212, 255);
+            --hero-text-1: rgb(255, 212, 230);
+            --hero-text-2: rgb(237, 214, 255);
+            --hero-text-3: rgb(204, 241, 252);
+        }
+        body {
+            font-family: 'Sour Gummy', sans-serif;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+        h1, h2, h3, .logo { font-family: 'DynaPuff', cursive; }
+
+        /* Info Banner */
+        .info-banner {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+        .info-banner h2 { margin-bottom: 0.5rem; }
+        .info-banner p { opacity: 0.9; font-size: 0.9rem; }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 1rem 2rem;
+            border-bottom: 3px solid var(--pastel-pink);
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.6rem; font-weight: 700; }
+        nav ul { display: flex; list-style: none; gap: 0.5rem; }
+        nav a {
+            text-decoration: none;
+            color: var(--text-light);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .hero-text h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+        .hero-text h1 span { display: block; }
+        .hero-text h1 span:nth-child(1) { color: var(--hero-text-1); }
+        .hero-text h1 span:nth-child(2) { color: var(--hero-text-2); }
+        .hero-text h1 span:nth-child(3) { color: var(--hero-text-3); }
+        .hero-text p {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .btn-primary { background: var(--btn-primary); color: var(--text-dark); }
+        .btn-secondary { background: var(--btn-secondary); color: var(--text-dark); }
+
+        .hero-cards {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .mini-card {
+            background: var(--bg-card);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            text-align: center;
+            min-width: 140px;
+        }
+        .mini-card:nth-child(1) { border-top: 4px solid var(--pastel-pink); }
+        .mini-card:nth-child(2) { border-top: 4px solid rgb(255, 251, 173); }
+        .mini-card:nth-child(3) { border-top: 4px solid rgb(186, 255, 219); }
+        .mini-card:nth-child(4) { border-top: 4px solid var(--pastel-purple); }
+        .mini-card-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .mini-card h3 { font-size: 0.9rem; }
+        .mini-card p { font-size: 0.8rem; color: var(--text-light); }
+
+        /* Replay Button */
+        .replay-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Sour Gummy', sans-serif;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+        .replay-btn:hover { transform: scale(1.05); }
+
+        /* Code Preview */
+        .code-preview {
+            background: #1a1a2e;
+            color: #eee;
+            padding: 2rem;
+            margin: 2rem;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+        .code-preview .comment { color: #6b7280; }
+        .code-preview .keyword { color: #c084fc; }
+        .code-preview .string { color: #86efac; }
+        .code-preview .number { color: #fbbf24; }
+    </style>
+</head>
+<body>
+    <div class="info-banner">
+        <h2>Option B: Subtle Elegance</h2>
+        <p>Small transforms (y: 30px), fast stagger (0.15s), power easing. Clean and professional feel.</p>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <span class="logo">My Portfolio</span>
+            <nav><ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Projects</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-text">
+            <h1><span>Welcome</span><span>to my</span><span>website!</span></h1>
+            <p>Stella's website</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-primary">See Projects</a>
+                <a href="#" class="btn btn-secondary">About Me</a>
+            </div>
+        </div>
+        <div class="hero-cards">
+            <div class="mini-card"><div class="mini-card-icon">🎨</div><h3>Creative</h3><p>Art & Design</p></div>
+            <div class="mini-card"><div class="mini-card-icon">💡</div><h3>Ideas</h3><p>Experiments</p></div>
+            <div class="mini-card"><div class="mini-card-icon">🌱</div><h3>Growing</h3><p>Learning</p></div>
+            <div class="mini-card"><div class="mini-card-icon">✨</div><h3>Fun</h3><p>Random Stuff</p></div>
+        </div>
+    </section>
+
+    <div class="code-preview">
+        <span class="comment">// OPTION B: Subtle Elegance - Clean, professional entrance</span><br><br>
+        <span class="keyword">const</span> heroTl = gsap.timeline();<br><br>
+        <span class="comment">// Title lines: Small Y offset, fast stagger, power ease</span><br>
+        heroTl.from(<span class="string">'.hero-text h1 span'</span>, {<br>
+        &nbsp;&nbsp;y: <span class="number">30</span>,<br>
+        &nbsp;&nbsp;opacity: <span class="number">0</span>,<br>
+        &nbsp;&nbsp;stagger: <span class="number">0.15</span>,<br>
+        &nbsp;&nbsp;duration: <span class="number">0.6</span>,<br>
+        &nbsp;&nbsp;ease: <span class="string">'power3.out'</span><br>
+        })<br><br>
+        <span class="comment">// Subtitle fades in smoothly</span><br>
+        .from(<span class="string">'.hero-text p'</span>, {<br>
+        &nbsp;&nbsp;opacity: <span class="number">0</span>,<br>
+        &nbsp;&nbsp;duration: <span class="number">0.5</span>,<br>
+        &nbsp;&nbsp;ease: <span class="string">'power2.out'</span><br>
+        }, <span class="string">'-=0.2'</span>)<br><br>
+        <span class="comment">// Buttons fade in together</span><br>
+        .from(<span class="string">'.btn'</span>, {<br>
+        &nbsp;&nbsp;opacity: <span class="number">0</span>,<br>
+        &nbsp;&nbsp;y: <span class="number">15</span>,<br>
+        &nbsp;&nbsp;stagger: <span class="number">0.1</span>,<br>
+        &nbsp;&nbsp;duration: <span class="number">0.4</span>,<br>
+        &nbsp;&nbsp;ease: <span class="string">'power2.out'</span><br>
+        }, <span class="string">'-=0.2'</span>)<br><br>
+        <span class="comment">// Mini-cards fade up gently</span><br>
+        .from(<span class="string">'.mini-card'</span>, {<br>
+        &nbsp;&nbsp;y: <span class="number">40</span>,<br>
+        &nbsp;&nbsp;opacity: <span class="number">0</span>,<br>
+        &nbsp;&nbsp;stagger: <span class="number">0.1</span>,<br>
+        &nbsp;&nbsp;duration: <span class="number">0.5</span>,<br>
+        &nbsp;&nbsp;ease: <span class="string">'power2.out'</span><br>
+        }, <span class="string">'-=0.2'</span>);
+    </div>
+
+    <button class="replay-btn" onclick="playAnimation()">Replay Animation</button>
+
+    <script>
+        function playAnimation() {
+            // Reset elements
+            gsap.set('.logo, nav a, .hero-text h1 span, .hero-text p, .btn, .mini-card', {
+                clearProps: 'all'
+            });
+
+            const masterTl = gsap.timeline();
+
+            // Nav animation - subtle
+            masterTl.from('.logo', {
+                y: -20,
+                opacity: 0,
+                duration: 0.4,
+                ease: 'power2.out'
+            })
+            .from('nav a', {
+                y: -15,
+                opacity: 0,
+                stagger: 0.08,
+                duration: 0.35,
+                ease: 'power2.out'
+            }, '-=0.2');
+
+            // Hero timeline - OPTION B: Subtle Elegance
+            const heroTl = gsap.timeline();
+
+            heroTl.from('.hero-text h1 span', {
+                y: 30,
+                opacity: 0,
+                stagger: 0.15,
+                duration: 0.6,
+                ease: 'power3.out'
+            })
+            .from('.hero-text p', {
+                opacity: 0,
+                duration: 0.5,
+                ease: 'power2.out'
+            }, '-=0.2')
+            .from('.btn', {
+                opacity: 0,
+                y: 15,
+                stagger: 0.1,
+                duration: 0.4,
+                ease: 'power2.out'
+            }, '-=0.2')
+            .from('.mini-card', {
+                y: 40,
+                opacity: 0,
+                stagger: 0.1,
+                duration: 0.5,
+                ease: 'power2.out'
+            }, '-=0.2');
+
+            masterTl.add(heroTl, '-=0.2');
+        }
+
+        // Play on load
+        window.addEventListener('load', () => {
+            setTimeout(playAnimation, 500);
+        });
+    </script>
+</body>
+</html>

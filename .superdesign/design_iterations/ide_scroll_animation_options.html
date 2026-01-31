@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Animation Options Comparison</title>
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;500;600;700&family=Sour+Gummy:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --pastel-pink: rgb(183, 209, 232);
+            --pastel-blue: rgb(255, 251, 173);
+            --pastel-green: rgb(186, 255, 219);
+            --pastel-purple: rgb(209, 165, 230);
+            --text-dark: #2D3748;
+            --text-light: #718096;
+            --bg-card: white;
+            --shadow-color: rgba(0,0,0,0.05);
+        }
+        body {
+            font-family: 'Sour Gummy', sans-serif;
+            background: linear-gradient(180deg, #fff 0%, rgb(255, 232, 244) 100%);
+            color: var(--text-dark);
+        }
+        h1, h2, h3 { font-family: 'DynaPuff', cursive; }
+
+        /* Info Banner */
+        .info-banner {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .info-banner h2 { margin-bottom: 0.5rem; }
+        .info-banner p { opacity: 0.9; font-size: 0.9rem; }
+
+        /* Spacer */
+        .spacer {
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--text-light);
+        }
+
+        /* Option Sections */
+        .option-section {
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+        .option-header {
+            background: var(--bg-card);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+        .option-header h2 { color: var(--text-dark); margin-bottom: 0.5rem; }
+        .option-header p { color: var(--text-light); }
+
+        /* Highlights Section */
+        .highlights-section {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .section-header h2 {
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        .section-header p { color: var(--text-light); }
+
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        @media (max-width: 768px) {
+            .highlights-grid { grid-template-columns: 1fr; }
+        }
+
+        .highlight-card {
+            background: linear-gradient(135deg, #fff 0%, #f7fafc 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .highlight-card:nth-child(1) { border-top: 4px solid var(--pastel-pink); }
+        .highlight-card:nth-child(2) { border-top: 4px solid var(--pastel-blue); }
+        .highlight-card:nth-child(3) { border-top: 4px solid var(--pastel-green); }
+        .highlight-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .highlight-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+        .highlight-card:nth-child(1) .highlight-icon { background: var(--pastel-pink); }
+        .highlight-card:nth-child(2) .highlight-icon { background: var(--pastel-blue); }
+        .highlight-card:nth-child(3) .highlight-icon { background: var(--pastel-green); }
+        .highlight-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        .highlight-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Code Preview */
+        .code-preview {
+            background: #1a1a2e;
+            color: #eee;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            overflow-x: auto;
+        }
+        .code-preview .comment { color: #6b7280; }
+        .code-preview .keyword { color: #c084fc; }
+        .code-preview .string { color: #86efac; }
+        .code-preview .number { color: #fbbf24; }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body>
+    <div class="info-banner">
+        <h2>Scroll Animation Options</h2>
+        <p>Scroll down to compare 3 different scroll-triggered animation approaches!</p>
+    </div>
+
+    <div class="spacer">Scroll down to see Option A...</div>
+
+    <!-- OPTION A: Fade Up Stagger -->
+    <div class="option-section" id="option-a">
+        <div class="option-header">
+            <h2>Option A: Fade Up Stagger</h2>
+            <p>Cards fade in and slide up with stagger delay. Clean and professional.</p>
+        </div>
+
+        <div class="highlights-section highlights-a">
+            <div class="section-header section-header-a">
+                <h2>What's Inside</h2>
+                <p>A glimpse of what you'll find here</p>
+            </div>
+            <div class="highlights-grid">
+                <div class="highlight-card card-a">
+                    <div class="highlight-icon">🌟</div>
+                    <h3>Creative Projects</h3>
+                    <p>Artwork, designs, and visual experiments.</p>
+                </div>
+                <div class="highlight-card card-a">
+                    <div class="highlight-icon">🔧</div>
+                    <h3>Code Things</h3>
+                    <p>Interactive coding projects and experiments.</p>
+                </div>
+                <div class="highlight-card card-a">
+                    <div class="highlight-icon">📚</div>
+                    <h3>Collections</h3>
+                    <p>Interesting things I've gathered and learned.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-preview">
+            <span class="comment">// OPTION A: Fade Up Stagger</span><br>
+            gsap.from(<span class="string">'.section-header'</span>, {<br>
+            &nbsp;&nbsp;scrollTrigger: { trigger: <span class="string">'.highlights-section'</span>, start: <span class="string">'top 80%'</span> },<br>
+            &nbsp;&nbsp;y: <span class="number">30</span>, opacity: <span class="number">0</span>, duration: <span class="number">0.6</span>, ease: <span class="string">'power2.out'</span><br>
+            });<br><br>
+            gsap.from(<span class="string">'.highlight-card'</span>, {<br>
+            &nbsp;&nbsp;scrollTrigger: { trigger: <span class="string">'.highlights-section'</span>, start: <span class="string">'top 70%'</span> },<br>
+            &nbsp;&nbsp;y: <span class="number">60</span>, opacity: <span class="number">0</span>, stagger: <span class="number">0.15</span>, duration: <span class="number">0.6</span>, ease: <span class="string">'power2.out'</span><br>
+            });
+        </div>
+    </div>
+
+    <div class="spacer">Scroll down to see Option B...</div>
+
+    <!-- OPTION B: Scale Pop -->
+    <div class="option-section" id="option-b">
+        <div class="option-header">
+            <h2>Option B: Scale Pop</h2>
+            <p>Cards scale up from small with back easing. Fun and bouncy.</p>
+        </div>
+
+        <div class="highlights-section highlights-b">
+            <div class="section-header section-header-b">
+                <h2>What's Inside</h2>
+                <p>A glimpse of what you'll find here</p>
+            </div>
+            <div class="highlights-grid">
+                <div class="highlight-card card-b">
+                    <div class="highlight-icon">🌟</div>
+                    <h3>Creative Projects</h3>
+                    <p>Artwork, designs, and visual experiments.</p>
+                </div>
+                <div class="highlight-card card-b">
+                    <div class="highlight-icon">🔧</div>
+                    <h3>Code Things</h3>
+                    <p>Interactive coding projects and experiments.</p>
+                </div>
+                <div class="highlight-card card-b">
+                    <div class="highlight-icon">📚</div>
+                    <h3>Collections</h3>
+                    <p>Interesting things I've gathered and learned.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-preview">
+            <span class="comment">// OPTION B: Scale Pop</span><br>
+            gsap.from(<span class="string">'.section-header'</span>, {<br>
+            &nbsp;&nbsp;scrollTrigger: { trigger: <span class="string">'.highlights-section'</span>, start: <span class="string">'top 80%'</span> },<br>
+            &nbsp;&nbsp;scale: <span class="number">0.8</span>, opacity: <span class="number">0</span>, duration: <span class="number">0.5</span>, ease: <span class="string">'back.out(1.7)'</span><br>
+            });<br><br>
+            gsap.from(<span class="string">'.highlight-card'</span>, {<br>
+            &nbsp;&nbsp;scrollTrigger: { trigger: <span class="string">'.highlights-section'</span>, start: <span class="string">'top 70%'</span> },<br>
+            &nbsp;&nbsp;scale: <span class="number">0</span>, stagger: <span class="number">0.12</span>, duration: <span class="number">0.6</span>, ease: <span class="string">'back.out(1.7)'</span><br>
+            });
+        </div>
+    </div>
+
+    <div class="spacer">Scroll down to see Option C...</div>
+
+    <!-- OPTION C: Slide From Sides -->
+    <div class="option-section" id="option-c">
+        <div class="option-header">
+            <h2>Option C: Slide From Sides</h2>
+            <p>Cards slide in from alternating left/right. Dynamic and engaging.</p>
+        </div>
+
+        <div class="highlights-section highlights-c">
+            <div class="section-header section-header-c">
+                <h2>What's Inside</h2>
+                <p>A glimpse of what you'll find here</p>
+            </div>
+            <div class="highlights-grid">
+                <div class="highlight-card card-c-1">
+                    <div class="highlight-icon">🌟</div>
+                    <h3>Creative Projects</h3>
+                    <p>Artwork, designs, and visual experiments.</p>
+                </div>
+                <div class="highlight-card card-c-2">
+                    <div class="highlight-icon">🔧</div>
+                    <h3>Code Things</h3>
+                    <p>Interactive coding projects and experiments.</p>
+                </div>
+                <div class="highlight-card card-c-3">
+                    <div class="highlight-icon">📚</div>
+                    <h3>Collections</h3>
+                    <p>Interesting things I've gathered and learned.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-preview">
+            <span class="comment">// OPTION C: Slide From Sides (alternating)</span><br>
+            gsap.from(<span class="string">'.section-header'</span>, {<br>
+            &nbsp;&nbsp;scrollTrigger: { trigger: <span class="string">'.highlights-section'</span>, start: <span class="string">'top 80%'</span> },<br>
+            &nbsp;&nbsp;y: <span class="number">-30</span>, opacity: <span class="number">0</span>, duration: <span class="number">0.5</span>, ease: <span class="string">'power2.out'</span><br>
+            });<br><br>
+            <span class="comment">// Cards from left</span><br>
+            gsap.from(<span class="string">'.highlight-card:nth-child(odd)'</span>, {<br>
+            &nbsp;&nbsp;scrollTrigger: { trigger: <span class="string">'.highlights-section'</span>, start: <span class="string">'top 70%'</span> },<br>
+            &nbsp;&nbsp;x: <span class="number">-100</span>, opacity: <span class="number">0</span>, stagger: <span class="number">0.2</span>, duration: <span class="number">0.7</span>, ease: <span class="string">'power3.out'</span><br>
+            });<br><br>
+            <span class="comment">// Cards from right</span><br>
+            gsap.from(<span class="string">'.highlight-card:nth-child(even)'</span>, {<br>
+            &nbsp;&nbsp;scrollTrigger: { trigger: <span class="string">'.highlights-section'</span>, start: <span class="string">'top 70%'</span> },<br>
+            &nbsp;&nbsp;x: <span class="number">100</span>, opacity: <span class="number">0</span>, stagger: <span class="number">0.2</span>, duration: <span class="number">0.7</span>, ease: <span class="string">'power3.out'</span><br>
+            });
+        </div>
+    </div>
+
+    <div class="spacer">End of demo. Scroll back up to compare!</div>
+
+    <div class="scroll-indicator">Scroll to trigger animations</div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // OPTION A: Fade Up Stagger
+        gsap.from('.section-header-a', {
+            scrollTrigger: {
+                trigger: '.highlights-a',
+                start: 'top 80%'
+            },
+            y: 30,
+            opacity: 0,
+            duration: 0.6,
+            ease: 'power2.out'
+        });
+
+        gsap.from('.card-a', {
+            scrollTrigger: {
+                trigger: '.highlights-a',
+                start: 'top 70%'
+            },
+            y: 60,
+            opacity: 0,
+            stagger: 0.15,
+            duration: 0.6,
+            ease: 'power2.out'
+        });
+
+        // OPTION B: Scale Pop
+        gsap.from('.section-header-b', {
+            scrollTrigger: {
+                trigger: '.highlights-b',
+                start: 'top 80%'
+            },
+            scale: 0.8,
+            opacity: 0,
+            duration: 0.5,
+            ease: 'back.out(1.7)'
+        });
+
+        gsap.from('.card-b', {
+            scrollTrigger: {
+                trigger: '.highlights-b',
+                start: 'top 70%'
+            },
+            scale: 0,
+            stagger: 0.12,
+            duration: 0.6,
+            ease: 'back.out(1.7)'
+        });
+
+        // OPTION C: Slide From Sides
+        gsap.from('.section-header-c', {
+            scrollTrigger: {
+                trigger: '.highlights-c',
+                start: 'top 80%'
+            },
+            y: -30,
+            opacity: 0,
+            duration: 0.5,
+            ease: 'power2.out'
+        });
+
+        gsap.from('.card-c-1, .card-c-3', {
+            scrollTrigger: {
+                trigger: '.highlights-c',
+                start: 'top 70%'
+            },
+            x: -100,
+            opacity: 0,
+            stagger: 0.2,
+            duration: 0.7,
+            ease: 'power3.out'
+        });
+
+        gsap.from('.card-c-2', {
+            scrollTrigger: {
+                trigger: '.highlights-c',
+                start: 'top 70%'
+            },
+            x: 100,
+            opacity: 0,
+            duration: 0.7,
+            delay: 0.1,
+            ease: 'power3.out'
+        });
+
+        // Hide scroll indicator after first scroll
+        ScrollTrigger.create({
+            trigger: '#option-a',
+            start: 'top 90%',
+            onEnter: () => {
+                gsap.to('.scroll-indicator', { opacity: 0, duration: 0.3 });
+            }
+        });
+    </script>
+</body>
+</html>
